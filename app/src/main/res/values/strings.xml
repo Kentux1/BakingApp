@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Baking App</string>
+
+    <string name="servings">Servings:</string>
+    <string name="servings_error">Servings: unknown</string>
+
+    <string name="error_loading_recipe">Error loading recipes from URL, status code: %1$D</string>
+    <string name="failed_to_load_recipes">Failed to load recipes.</string>
+
+    <string name="ingredients">Ingredients:</string>
+
+    <string name="button_choose_recipe">Choose Recipe</string>
+    <string name="appwidget_text">Click here to choose a recipe.\nRecipe Ingredients will be shown here when the app is started.</string>
+</resources>
