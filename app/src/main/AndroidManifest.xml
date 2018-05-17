@@ -44,6 +44,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DetailActivity" />
         </activity>
+
+        <service android:name=".widget.BakingWidgetService"/>
+
         <activity android:name=".WidgetActivity"
             android:label="Choose a Recipe"
             android:launchMode="singleTop">
