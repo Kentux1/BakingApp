@@ -24,12 +24,19 @@
         android:id="@+id/step_detail_relative_layout"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="280dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/recipe_exoplayer_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/no_media_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher"/>
     </RelativeLayout>
 
 </LinearLayout>

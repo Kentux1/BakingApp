@@ -41,7 +41,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         String [] recipe = new String[3];
         recipe[0] = "0";
-        recipe[1] = "1";
+        recipe[1] = "";
         recipe[2] = context.getString(R.string.appwidget_text);
         updateBakingWidgets(context, appWidgetManager, appWidgetIds, recipe);
     }

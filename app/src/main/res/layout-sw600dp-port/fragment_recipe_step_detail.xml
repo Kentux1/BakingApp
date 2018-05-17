@@ -30,6 +30,12 @@
             android:id="@+id/recipe_exoplayer_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/no_media_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher"/>
     </RelativeLayout>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.tiago.bakingapp.fragments;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,9 +40,11 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -71,6 +75,9 @@ public class RecipeStepDetailFragment extends Fragment implements Player.EventLi
     @BindView(R.id.step_desc_text_view) TextView mStepDescriptionTextView;
     @BindView(R.id.step_detail_relative_layout) RelativeLayout mRelativeLayout;
     @BindView(R.id.recipe_exoplayer_view) SimpleExoPlayerView mExoPlayerView;
+    @BindView(R.id.no_media_image_view) ImageView mNoMediaImageView;
+
+    @BindDrawable(R.mipmap.ic_launcher) Drawable mDefaultImage;
 
     public RecipeStepDetailFragment() {
         // Required empty public constructor
@@ -142,11 +149,22 @@ public class RecipeStepDetailFragment extends Fragment implements Player.EventLi
 
     public void createMediaPlayer() {
         if (!mVideoUrl.isEmpty()) {
-            mRelativeLayout.setVisibility(View.VISIBLE);
+            ButterKnife.apply(mNoMediaImageView, VISIBILITY, View.GONE);
+
             initializeMediaSession();
             initializePlayer(Uri.parse(mVideoUrl));
         } else {
-            mRelativeLayout.setVisibility(View.INVISIBLE);
+            ButterKnife.apply(mNoMediaImageView, VISIBILITY, View.VISIBLE);
+
+            if (!mThumbnailUrl.isEmpty()) {
+                Picasso.get()
+                        .load(mThumbnailUrl)
+                        .placeholder(mDefaultImage)
+                        .error(mDefaultImage)
+                        .into(mNoMediaImageView);
+            } else {
+                mNoMediaImageView.setImageDrawable(mDefaultImage);
+            }
         }
     }
 
@@ -212,6 +230,8 @@ public class RecipeStepDetailFragment extends Fragment implements Player.EventLi
             mExoPlayer.seekTo(0);
         }
     }
+
+
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
 
@@ -268,13 +288,7 @@ public class RecipeStepDetailFragment extends Fragment implements Player.EventLi
         mUnbinder.unbind();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
-            createMediaPlayer();
-        }
-    }
+
 
     @Override
     public void onPause() {
@@ -283,11 +297,22 @@ public class RecipeStepDetailFragment extends Fragment implements Player.EventLi
         releasePlayer();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
+            createMediaPlayer();
+        }
+    }
     private void releasePlayer() {
         if (mExoPlayer != null) {
             mPlayerPosition = mExoPlayer.getCurrentPosition();
+        }
+
+        if (mExoPlayer != null) {
             mExoPlayer.stop();
             mExoPlayer.release();
+            mExoPlayer = null;
         }
         if (mMediaSessionCompat != null) {
             mMediaSessionCompat.setActive(false);
@@ -297,4 +322,12 @@ public class RecipeStepDetailFragment extends Fragment implements Player.EventLi
             mTrackSelector = null;
         }
     }
+
+    private static final ButterKnife.Setter<View, Integer> VISIBILITY = new
+            ButterKnife.Setter<View, Integer>() {
+                @Override
+                public void set(@NonNull View view, Integer value, int index) {
+                    view.setVisibility(value);
+                }
+            };
 }

@@ -43,6 +43,7 @@ public class WidgetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setResult(RESULT_CANCELED);
         setContentView(R.layout.activity_widget);
         ButterKnife.bind(this);
 
@@ -59,7 +60,7 @@ public class WidgetActivity extends AppCompatActivity {
 
         chooseRecipe();
 
-        mAppWidgetManager = AppWidgetManager. getInstance(mContext);
+        mAppWidgetManager = AppWidgetManager.getInstance(mContext);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
